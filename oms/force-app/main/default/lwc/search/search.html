@@ -1,0 +1,24 @@
+<template>
+    <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-3">
+            <!-- Your lightning-output-field components here -->
+            <lightning-input type="string" placeholder="Search by Product Name" value={searchKey_name} onchange={handleKeyChange}></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <!-- Your lightning-output-field components here -->
+            <lightning-input type="string" placeholder="Search by Product Brand"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+            <!-- Your lightning-output-field components here -->
+            <lightning-input type="string" placeholder="Search by Product MRP"></lightning-input>
+        </div>
+    </div>
+    <template if:true={isshow}>
+        <template for:each={products.data} for:item="product">
+            <p key={abc}>
+                Name : {product.Name} <br/>
+                Brand : {product.Brand__c}
+            </p>
+        </template>
+    </template>
+</template>
