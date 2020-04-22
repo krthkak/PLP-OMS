@@ -61,6 +61,7 @@ export default class Search extends LightningElement {
         console.log("Product Id : "+event.target.value);
         this.product_id = event.target.value;
         getUnitPrice({'searchId':event.target.value}).then(result=> {
+            console.log(JSON.stringify(result))
             this.unitprice = result[0].UnitPrice;
             this.pricebookentryid = result[0].Id;
             console.log(this.unitprice);
@@ -73,7 +74,7 @@ export default class Search extends LightningElement {
             });
             this.dispatchEvent(event);
             // reset contacts var with null   
-            this.order = null;
+           // this.order = null;
         });
         this.isShowAdd = true;
     }
@@ -90,7 +91,7 @@ export default class Search extends LightningElement {
         console.log(JSON.stringify(event.detail));
     }
 
-    close(event)
+    handleClose(event)
     {
         this.isShowAdd = false;
     }

@@ -2,15 +2,15 @@
 
     <template if:true={isShowAdd}>
         <lightning-record-edit-form object-api-name="OrderItem" onsuccess={handleSuccess} onerror={handleError}>
-            <lightning-input-field field-name="OrderId" value = "8012w000000g7ZDAAY">
+            <lightning-input-field field-name="OrderId">
             </lightning-input-field>
-            <lightning-input-field field-name="Product2Id" value={product_id}>
+            <lightning-input-field field-name="Product2Id" value={product_id} readonly disabled>
             </lightning-input-field>
-            <lightning-input-field field-name="UnitPrice" value={unitprice}>
+            <lightning-input-field field-name="UnitPrice" value={unitprice} readonly disabled>
             </lightning-input-field>
             <lightning-input-field field-name="Quantity" >
             </lightning-input-field>
-            <lightning-input-field field-name="PricebookEntryId" value={pricebookentryid} readonly>
+            <lightning-input-field class = "slds-hide" field-name="PricebookEntryId" value={pricebookentryid} readonly>
             </lightning-input-field>
             <lightning-button 
             class="slds-m-top_small" 
@@ -19,6 +19,11 @@
             name="add" 
             label="Add">
             </lightning-button>
+            <lightning-button 
+            class="slds-m-top_small"
+            type = "reset" 
+            label= "Cancel" 
+            onclick={handleClose}></lightning-button>
         </lightning-record-edit-form>
     </template>
     <br><br>
@@ -75,12 +80,20 @@
                             <div class="slds-truncate" >{product.Stock_Quantity__c}</div>
                             </td>
                             <td data-label="Confidence">
-                                <div class="slds-truncate" ><lightning-button label=Add onclick={handleAdd} value = {product.Id}></lightning-button></div>
+                                <div class="slds-truncate" >
+                                    <lightning-button label=Add onclick={handleAdd} value = {product.Id}></lightning-button>
+                                </div>
                             </td>
                         </tr>
                 </template>        
             </tbody>
             </table>
         
-    </template>
+    </template><br>
+    <lightning-button 
+            class="slds-m-top_small" 
+            variant="brand"  
+            name="continue" 
+            label="Continue">
+            </lightning-button>
 </template>

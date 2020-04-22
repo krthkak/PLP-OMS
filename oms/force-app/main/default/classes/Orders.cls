@@ -23,7 +23,8 @@ public with sharing class Orders {
        // String sea = searchName.toLowerCase();
     //    String key_name = '%' + searchKey_name + '%';
     //    String key_brand = '%'+ searchKey_brand + '%';
-        List<PricebookEntry> li = [select Id,UnitPrice from PricebookEntry WHERE Product2Id =:searchId];
+        Id prid = '01s2w000004mHGDAA2' ;
+        List<PricebookEntry> li = [select Id,UnitPrice from PricebookEntry WHERE Product2Id =:searchId AND Pricebook2Id=:prid];
         return li;
     }
 
