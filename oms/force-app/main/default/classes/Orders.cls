@@ -19,12 +19,12 @@ public with sharing class Orders {
     }
 
     @AuraEnabled(cacheable = true)
-    public static Decimal getUnitPrice(Id searchId){
+    public static List<PricebookEntry> getUnitPrice(Id searchId){
        // String sea = searchName.toLowerCase();
     //    String key_name = '%' + searchKey_name + '%';
     //    String key_brand = '%'+ searchKey_brand + '%';
-        List<PricebookEntry> li = [select UnitPrice from PricebookEntry WHERE Product2Id =:searchId];
-        return li[0].UnitPrice;
+        List<PricebookEntry> li = [select Id,UnitPrice from PricebookEntry WHERE Product2Id =:searchId];
+        return li;
     }
 
 }

@@ -8,6 +8,7 @@ export default class Search extends LightningElement {
     @api searchKey_brand = "";
     @api product_id;
     @api unitprice;
+    @api pricebookentryid;
     products;
     isshow = false;
     isShowAdd = false;
@@ -60,7 +61,8 @@ export default class Search extends LightningElement {
         console.log("Product Id : "+event.target.value);
         this.product_id = event.target.value;
         getUnitPrice({'searchId':event.target.value}).then(result=> {
-            this.unitprice = result;
+            this.unitprice = result[0].UnitPrice;
+            this.pricebookentryid = result[0].Id;
             console.log(this.unitprice);
         }).catch(error => {
             // display server exception in toast msg 
@@ -74,6 +76,23 @@ export default class Search extends LightningElement {
             this.order = null;
         });
         this.isShowAdd = true;
+    }
+
+    handleSuccess(event)
+    {
+        const updatedRecord = event.detail.id;
+        console.log('onsuccess: ', updatedRecord); 
+        this.isShowAdd = false;
+    }
+
+    handleError(event) {
+        console.log("handleError event");
+        console.log(JSON.stringify(event.detail));
+    }
+
+    close(event)
+    {
+        this.isShowAdd = false;
     }
 
 }
