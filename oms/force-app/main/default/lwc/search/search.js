@@ -1,12 +1,19 @@
 import { LightningElement, wire, api } from 'lwc';
-import getProducts from '@salesforce/apex/Orders.getProducts'
+import getProducts from '@salesforce/apex/Orders.getProducts';
+import getUnitPrice from '@salesforce/apex/Orders.getUnitPrice';
 const DELAY = 300;
 export default class Search extends LightningElement {
 
     @api searchKey_name = "";
     @api searchKey_brand = "";
+    @api product_id;
+    @api unitprice;
     products;
     isshow = false;
+    isShowAdd = false;
+    
+
+
     @wire(getProducts,{searchKey_name:'$searchKey_name',searchKey_brand:'$searchKey_brand'})
     wiredContacts({ error, data }) {
         if (data) {
@@ -47,4 +54,26 @@ export default class Search extends LightningElement {
         }, DELAY);
     
     }
+
+    handleAdd(event)
+    {
+        console.log("Product Id : "+event.target.value);
+        this.product_id = event.target.value;
+        getUnitPrice({'searchId':event.target.value}).then(result=> {
+            this.unitprice = result;
+            console.log(this.unitprice);
+        }).catch(error => {
+            // display server exception in toast msg 
+            const event = new ShowToastEvent({
+                title: 'Error',
+                variant: 'error',
+                message: error.body.message,
+            });
+            this.dispatchEvent(event);
+            // reset contacts var with null   
+            this.order = null;
+        });
+        this.isShowAdd = true;
+    }
+
 }

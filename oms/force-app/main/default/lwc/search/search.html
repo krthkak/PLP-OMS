@@ -1,4 +1,19 @@
 <template>
+
+    <template if:true={isShowAdd}>
+        <lightning-record-edit-form object-api-name="OrderItem">
+            <lightning-input-field field-name="OrderId" value = "8012w000000g7ZDAAY">
+            </lightning-input-field>
+            <lightning-input-field field-name="Product2Id" value={product_id}>
+            </lightning-input-field>
+            <lightning-input-field field-name="UnitPrice" value={unitprice}>
+            </lightning-input-field>
+            <lightning-input-field field-name="Quantity" >
+            </lightning-input-field>
+        </lightning-record-edit-form>
+    </template>
+    <br><br>
+
     <div class="slds-grid">
         <div class="slds-col slds-size_1-of-2">
             <!-- Your lightning-output-field components here -->
@@ -13,6 +28,7 @@
             <lightning-input type="string" placeholder="Search by Product MRP"></lightning-input>
         </div> -->
     </div>
+    <br><br>
     <template if:true={isshow}>
         <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
             <thead>
@@ -35,7 +51,7 @@
             </tr>
             </thead>
             <tbody>
-                <template for:each={products} for:item="product">
+                <template for:each={products} for:item="product" >
                         <tr key = {abc} class="slds-hint-parent">
                             <td data-label="Product Name">
                             <div class="slds-truncate" >{product.Name}</div>
@@ -50,10 +66,9 @@
                             <div class="slds-truncate" >{product.Stock_Quantity__c}</div>
                             </td>
                             <td data-label="Confidence">
-                                <div class="slds-truncate" ><lightning-button label=Add onclick={handleAdd}></lightning-button></div>
+                                <div class="slds-truncate" ><lightning-button label=Add onclick={handleAdd} value = {product.Id}></lightning-button></div>
                             </td>
                         </tr>
-                        gfcgvbhnjj
                 </template>        
             </tbody>
             </table>
