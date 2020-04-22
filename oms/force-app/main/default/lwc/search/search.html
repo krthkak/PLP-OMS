@@ -1,24 +1,62 @@
 <template>
     <div class="slds-grid">
-        <div class="slds-col slds-size_1-of-3">
+        <div class="slds-col slds-size_1-of-2">
             <!-- Your lightning-output-field components here -->
-            <lightning-input type="string" placeholder="Search by Product Name" value={searchKey_name} onchange={handleKeyChange}></lightning-input>
+            <lightning-input type="string" placeholder="Search by Product Name" value={searchKey_name} onchange={handleKeyNameChange}></lightning-input>
         </div>
-        <div class="slds-col slds-size_1-of-3">
+        <div class="slds-col slds-size_1-of-2">
             <!-- Your lightning-output-field components here -->
-            <lightning-input type="string" placeholder="Search by Product Brand"></lightning-input>
+            <lightning-input type="string" placeholder="Search by Product Brand" value={searchKey_brand} onchange={handleKeyBrandChange}></lightning-input>
         </div>
-        <div class="slds-col slds-size_1-of-3">
-            <!-- Your lightning-output-field components here -->
+        <!-- <div class="slds-col slds-size_1-of-3">
+            Your lightning-output-field components here 
             <lightning-input type="string" placeholder="Search by Product MRP"></lightning-input>
-        </div>
+        </div> -->
     </div>
     <template if:true={isshow}>
-        <template for:each={products.data} for:item="product">
-            <p key={abc}>
-                Name : {product.Name} <br/>
-                Brand : {product.Brand__c}
-            </p>
-        </template>
+        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
+            <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Product Name">Product Name</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Product Code">Product Code</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Brand Name">Brand Name</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Stock Quantity">Stock Quantity</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Stock Quantity">Add Product</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <template for:each={products} for:item="product">
+                        <tr key = {abc} class="slds-hint-parent">
+                            <td data-label="Product Name">
+                            <div class="slds-truncate" >{product.Name}</div>
+                            </td>
+                            <td data-label="Close Date">
+                            <div class="slds-truncate" >{product.ProductCode}</div>
+                            </td>
+                            <td data-label="Prospecting">
+                            <div class="slds-truncate" >{product.Brand__c}</div>
+                            </td>
+                            <td data-label="Confidence">
+                            <div class="slds-truncate" >{product.Stock_Quantity__c}</div>
+                            </td>
+                            <td data-label="Confidence">
+                                <div class="slds-truncate" ><lightning-button label=Add onclick={handleAdd}></lightning-button></div>
+                            </td>
+                        </tr>
+                        gfcgvbhnjj
+                </template>        
+            </tbody>
+            </table>
+        
     </template>
 </template>
