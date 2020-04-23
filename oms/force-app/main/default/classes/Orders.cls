@@ -28,4 +28,13 @@ public with sharing class Orders {
         return li;
     }
 
+    @AuraEnabled(cacheable = true)
+    public static List<OrderItem> getRelatedOrderItem(Id ordId){
+       // String sea = searchName.toLowerCase();
+    //    String key_name = '%' + searchKey_name + '%';
+    //    String key_brand = '%'+ searchKey_brand + '%';
+        List<OrderItem> li = [select Product_Name__c,Product_Code__c,Product_Brand__c,Quantity,UnitPrice,TotalPrice,orderId from orderitem where orderId=:ordId];
+        return li;
+    }
+
 }

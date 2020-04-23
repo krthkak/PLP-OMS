@@ -1,6 +1,7 @@
 import { LightningElement, wire, api } from 'lwc';
 import getProducts from '@salesforce/apex/Orders.getProducts';
 import getUnitPrice from '@salesforce/apex/Orders.getUnitPrice';
+import getRelatedOrderItem from '@salesforce/apex/Orders.getRelatedOrderItem';
 const DELAY = 300;
 export default class Search extends LightningElement {
 
@@ -9,14 +10,20 @@ export default class Search extends LightningElement {
     @api product_id;
     @api unitprice;
     @api pricebookentryid;
+    @api currentOrderId;
+
+
     products;
+    relatedOrderItems;
     isshow = false;
     isShowAdd = false;
+    isShowSearchComponent = true;
+    isShowFinalOrder = false;
     
 
 
     @wire(getProducts,{searchKey_name:'$searchKey_name',searchKey_brand:'$searchKey_brand'})
-    wiredContacts({ error, data }) {
+    wiredProducts({ error, data }) {
         if (data) {
             this.products = data;
             this.error = undefined;
@@ -30,7 +37,57 @@ export default class Search extends LightningElement {
             console.log("not working");
         }
     }
+
+    // @wire(getRelatedOrderItem,{ordId:'$currentOrderId'})
+    // wiredRelatedOrderItem({ error, data }) {
+    //     if (data) {
+    //         this.relatedOrderItems = data;
+    //         this.error = undefined;
+    //         console.log("from related order items");
+    //         console.log(JSON.stringify(data));
+    //         this.isshow=false;
+    //         this.isshow=true;
+    //     } else if (error) {
+    //         this.error = error;
+    //         this.relatedOrderItems = undefined;
+    //         console.log("not working");
+    //     }
+    // } 
     
+    saveOrderId(event)
+    {
+        this.currentOrderId = event.target.value;
+    }
+
+    handleContinueHelper()
+    {
+        getRelatedOrderItem({ordId:this.currentOrderId}).then(
+            result=>{
+                console.log("result received");
+                console.log(JSON.stringify(result));
+                this.relatedOrderItems = JSON.parse(JSON.stringify(result));
+            }
+        ).catch(error => {
+            // display server exception in toast msg 
+            const event = new ShowToastEvent({
+                title: 'Error',
+                variant: 'error',
+                message: error.body.message,
+            });
+            this.dispatchEvent(event);
+            // reset contacts var with null   
+           // this.order = null;
+        });
+    }
+
+    handleContinue(event)
+    {
+        console.log("isShowSearchComponent");
+        this.handleContinueHelper();
+        this.isShowSearchComponent = false;
+        this.isShowFinalOrder = true;
+        
+    }
 
     handleKeyNameChange(event) {
         // Debouncing this method: Do not update the reactive property as long as this function is

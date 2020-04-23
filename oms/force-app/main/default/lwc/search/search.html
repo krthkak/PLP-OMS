@@ -1,16 +1,16 @@
 <template>
-
+    <template if:true={isShowSearchComponent}>
     <template if:true={isShowAdd}>
         <lightning-record-edit-form object-api-name="OrderItem" onsuccess={handleSuccess} onerror={handleError}>
-            <lightning-input-field field-name="OrderId">
+            <lightning-input-field field-name="OrderId" onchange={saveOrderId}>
             </lightning-input-field>
-            <lightning-input-field field-name="Product2Id" value={product_id} readonly disabled>
+            <lightning-input-field field-name="Product2Id" value={product_id} disabled>
             </lightning-input-field>
-            <lightning-input-field field-name="UnitPrice" value={unitprice} readonly disabled>
+            <lightning-input-field field-name="UnitPrice" value={unitprice} disabled>
             </lightning-input-field>
             <lightning-input-field field-name="Quantity" >
             </lightning-input-field>
-            <lightning-input-field class = "slds-hide" field-name="PricebookEntryId" value={pricebookentryid} readonly>
+            <lightning-input-field class = "slds-hide" field-name="PricebookEntryId" value={pricebookentryid} >
             </lightning-input-field>
             <lightning-button 
             class="slds-m-top_small" 
@@ -94,6 +94,75 @@
             class="slds-m-top_small" 
             variant="brand"  
             name="continue" 
-            label="Continue">
+            label="Continue"
+            onclick={handleContinue}>
             </lightning-button>
+    </template>
+
+    <template if:true={isShowFinalOrder}>
+        <div class="slds-text-heading--large">Order Summary</div>
+        <br>
+        <h3 class="slds-section-title--divider">Order Items</h3>
+        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
+            <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Product Name">Product Name</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Product Code">Product Code</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Brand Name">Brand Name</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Stock Quantity">Quantity</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Stock Quantity">Unit Price</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Stock Quantity">Total Price</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Stock Quantity">Remove Product</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <template for:each={relatedOrderItems} for:item="orderitem" >
+                        <tr key = {abc} class="slds-hint-parent">
+                            <td data-label="Product Name">
+                            <div class="slds-truncate" >{orderitem.Product_Name__c}</div>
+                            </td>
+                            <td data-label="Close Date">
+                            <div class="slds-truncate" >{orderitem.Product_Code__c}</div>
+                            </td>
+                            <td data-label="Prospecting">
+                            <div class="slds-truncate" >{orderitem.Product_Brand__c}</div>
+                            </td>
+                            <td data-label="Confidence">
+                            <div class="slds-truncate" >{orderitem.Quantity}</div>
+                            </td>
+                            <td data-label="Confidence">
+                                <div class="slds-truncate" >{orderitem.UnitPrice}</div>
+                            </td>
+                            <td data-label="Confidence">
+                                <div class="slds-truncate" >{orderitem.TotalPrice}</div>
+                            </td>
+                            <td data-label="Confidence">
+                                <div class="slds-truncate" >
+                                    <lightning-button label=Remove onclick={handleAdd} value = {orderitem.Id}></lightning-button>
+                                </div>
+                            </td>
+                        </tr>
+                </template>        
+            </tbody>
+            </table>
+            <br>
+            <h3 class="slds-section-title--divider">Order Details</h3>
+
+        
+
+    </template>
 </template>
