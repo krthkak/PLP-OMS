@@ -103,6 +103,7 @@
         <div class="slds-text-heading--large">Order Summary</div>
         <br>
         <h3 class="slds-section-title--divider">Order Items</h3>
+        <br>
         <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
             <thead>
             <tr class="slds-line-height_reset">
@@ -131,7 +132,7 @@
             </thead>
             <tbody>
                 <template for:each={relatedOrderItems} for:item="orderitem" >
-                        <tr key = {abc} class="slds-hint-parent">
+                        <tr key = {orderitem.Id} class="slds-hint-parent">
                             <td data-label="Product Name">
                             <div class="slds-truncate" >{orderitem.Product_Name__c}</div>
                             </td>
@@ -152,7 +153,7 @@
                             </td>
                             <td data-label="Confidence">
                                 <div class="slds-truncate" >
-                                    <lightning-button label=Remove onclick={handleAdd} value = {orderitem.Id}></lightning-button>
+                                    <lightning-button label=Remove onclick={handleRemove} value = {orderitem.Id}></lightning-button>
                                 </div>
                             </td>
                         </tr>
@@ -161,8 +162,32 @@
             </table>
             <br>
             <h3 class="slds-section-title--divider">Order Details</h3>
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <!-- <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                    <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Order Number</span>
+                    </span>
+                    </div> -->
+                    <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                    <span>Order Number : {orderDetails.OrderNumber}</span>
+                    </h2>
+                    </div>
+                    <div class="slds-no-flex">
+                    <button class="slds-button slds-button_neutral">Cancel</button>
+                    </div>
+                    </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">Total Amount : {orderDetails.TotalAmount}</div>
+                    <footer class="slds-card__footer">
+                    <span class="slds-assistive-text">{orderDetails.TotalAmount}</span>
+                    </footer>
+                </article>
+            </template>
 
-        
-
-    </template>
 </template>

@@ -1,7 +1,7 @@
 public with sharing class Orders {
-    @AuraEnabled(cacheable = true)
-    public static List<Order> getAllOrders(){
-        List<Order> li = [SELECT Name,OrderNumber,Status FROM Order];
+    @AuraEnabled()
+    public static List<Order> getOrderDetail(Id ordId){
+        List<Order> li = [select Id,TotalAmount,OrderNumber,Name from Order WHERE Id=:ordId];
         return li;
     }
 
@@ -28,13 +28,24 @@ public with sharing class Orders {
         return li;
     }
 
-    @AuraEnabled(cacheable = true)
+    @AuraEnabled()
     public static List<OrderItem> getRelatedOrderItem(Id ordId){
        // String sea = searchName.toLowerCase();
     //    String key_name = '%' + searchKey_name + '%';
     //    String key_brand = '%'+ searchKey_brand + '%';
         List<OrderItem> li = [select Product_Name__c,Product_Code__c,Product_Brand__c,Quantity,UnitPrice,TotalPrice,orderId from orderitem where orderId=:ordId];
         return li;
+    }
+
+    @AuraEnabled()
+    public static void deleteRelatedOrderItem(Id ordId){
+
+        List<OrderItem> li = [select orderId from orderitem where orderId=:ordId];
+        try {
+            delete li;
+        } catch (Exception e) {
+           // return e.getMessage();
+        }
     }
 
 }

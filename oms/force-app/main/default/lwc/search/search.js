@@ -2,6 +2,9 @@ import { LightningElement, wire, api } from 'lwc';
 import getProducts from '@salesforce/apex/Orders.getProducts';
 import getUnitPrice from '@salesforce/apex/Orders.getUnitPrice';
 import getRelatedOrderItem from '@salesforce/apex/Orders.getRelatedOrderItem';
+import getOrderDetails from '@salesforce/apex/Orders.getOrderDetail';
+import deleteRelatedOrderItem from '@salesforce/apex/Orders.deleteRelatedOrderItem';
+import { deleteRecord } from 'lightning/uiRecordApi';
 const DELAY = 300;
 export default class Search extends LightningElement {
 
@@ -14,7 +17,8 @@ export default class Search extends LightningElement {
 
 
     products;
-    relatedOrderItems;
+    @api relatedOrderItems;
+    @api orderDetails = {"OrderNumber":"no data","TotalAmount":"NO data"};
     isshow = false;
     isShowAdd = false;
     isShowSearchComponent = true;
@@ -66,6 +70,26 @@ export default class Search extends LightningElement {
                 console.log("result received");
                 console.log(JSON.stringify(result));
                 this.relatedOrderItems = JSON.parse(JSON.stringify(result));
+            }
+        ).catch(error => {
+            // display server exception in toast msg 
+            const event = new ShowToastEvent({
+                title: 'Error',
+                variant: 'error',
+                message: error.body.message,
+            });
+            this.dispatchEvent(event);
+            // reset contacts var with null   
+           // this.order = null;
+        });
+
+        getOrderDetails({ordId:this.currentOrderId}).then(
+            result=>{
+                console.log("result received for order details");
+                console.log(JSON.stringify(result));
+                this.orderDetails = JSON.parse(JSON.stringify(result))[0];
+                console.log("order details");
+                console.log(this.orderDetails);
             }
         ).catch(error => {
             // display server exception in toast msg 
@@ -134,6 +158,30 @@ export default class Search extends LightningElement {
            // this.order = null;
         });
         this.isShowAdd = true;
+    }
+
+    handleRemove(event)
+    {
+        deleteRecord(event.target.value).then(
+            result=>{
+                console.log(result);
+                this.handleContinueHelper();
+                alert("Deleted succesfully");
+                
+            }
+        ).catch(error => {
+            // display server exception in toast msg 
+            const event = new ShowToastEvent({
+                title: 'Error',
+                variant: 'error',
+                message: error.body.message,
+            });
+            this.dispatchEvent(event);
+            // reset contacts var with null   
+           // this.order = null;
+        });
+       // this.handleContinueHelper();
+      
     }
 
     handleSuccess(event)
