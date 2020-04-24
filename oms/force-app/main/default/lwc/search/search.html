@@ -179,11 +179,18 @@
                     </h2>
                     </div>
                     <div class="slds-no-flex">
-                    <button class="slds-button slds-button_neutral">Cancel</button>
+                    <button class="slds-button slds-button_destructive" onclick={handleCancelOrder}>Cancel</button>
+                    <button class="slds-button slds-button_brand">Confirm</button>
                     </div>
                     </header>
                     </div>
-                    <div class="slds-card__body slds-card__body_inner">Total Amount : {orderDetails.TotalAmount}</div>
+                    <div class="slds-card__body slds-card__body_inner">Total Amount :&nbsp;&nbsp;
+                        <lightning-formatted-number
+                            value={orderDetails.TotalAmount}
+                            format-style="currency"
+                            currency-code="USD">
+                        </lightning-formatted-number></div>
+                    <div class="slds-card__body slds-card__body_inner">Total Quantity : {orderDetails.Total_Quantity__c}</div>
                     <footer class="slds-card__footer">
                     <span class="slds-assistive-text">{orderDetails.TotalAmount}</span>
                     </footer>

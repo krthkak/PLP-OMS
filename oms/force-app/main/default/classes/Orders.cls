@@ -1,7 +1,7 @@
 public with sharing class Orders {
     @AuraEnabled()
     public static List<Order> getOrderDetail(Id ordId){
-        List<Order> li = [select Id,TotalAmount,OrderNumber,Name from Order WHERE Id=:ordId];
+        List<Order> li = [select Id,TotalAmount,OrderNumber,Name,Total_Quantity__c from Order WHERE Id=:ordId];
         return li;
     }
 

@@ -13,7 +13,7 @@ export default class Search extends LightningElement {
     @api product_id;
     @api unitprice;
     @api pricebookentryid;
-    @api currentOrderId;
+    @api currentOrderId = null;
 
 
     products;
@@ -107,10 +107,14 @@ export default class Search extends LightningElement {
     handleContinue(event)
     {
         console.log("isShowSearchComponent");
-        this.handleContinueHelper();
-        this.isShowSearchComponent = false;
-        this.isShowFinalOrder = true;
-        
+        if(this.currentOrderId!=null)
+        {
+            this.handleContinueHelper();
+            this.isShowSearchComponent = false;
+            this.isShowFinalOrder = true;
+        }
+        else alert("Select a product with Order to continue");
+
     }
 
     handleKeyNameChange(event) {
@@ -189,6 +193,7 @@ export default class Search extends LightningElement {
         const updatedRecord = event.detail.id;
         console.log('onsuccess: ', updatedRecord); 
         this.isShowAdd = false;
+        alert("Product added Successfully");
     }
 
     handleError(event) {
@@ -199,6 +204,11 @@ export default class Search extends LightningElement {
     handleClose(event)
     {
         this.isShowAdd = false;
+    }
+
+    handleCancelOrder(event)
+    {
+        location.reload();
     }
 
 }

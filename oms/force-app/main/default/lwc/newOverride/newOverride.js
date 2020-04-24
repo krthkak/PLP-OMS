@@ -6,6 +6,8 @@ export default class NewOverride extends LightningElement {
     {
         this.orderId = event.detail.id;
         console.log(this.orderId);
+        alert("Order Created Successfully");
+        location.reload();
     }
 
     handleSubmit(event) {
