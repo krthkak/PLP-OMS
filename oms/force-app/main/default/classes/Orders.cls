@@ -10,10 +10,11 @@ public with sharing class Orders {
        // String sea = searchName.toLowerCase();
        String key_name = '%' + searchKey_name + '%';
        String key_brand = '%'+ searchKey_brand + '%';
-        List<Product2> li = [SELECT Brand__c,Name,Stock_Quantity__c,ProductCode FROM Product2 WHERE Name LIKE :key_name AND Brand__c LIKE :key_brand];
+       Integer zero = 0;
+        List<Product2> li = [SELECT Brand__c,Name,Stock_Quantity__c,ProductCode FROM Product2 WHERE Name LIKE :key_name AND Brand__c LIKE :key_brand AND Stock_Quantity__c !=:zero];
         if(li.size()==0)
         {
-            return [SELECT Brand__c,Name,Stock_Quantity__c,ProductCode FROM Product2 WHERE Name LIKE :key_name];
+            return [SELECT Brand__c,Name,Stock_Quantity__c,ProductCode FROM Product2 WHERE Name LIKE :key_name AND Stock_Quantity__c !=:zero];
         }
         return li;
     }
@@ -37,6 +38,7 @@ public with sharing class Orders {
         return li;
     }
 
+    //NOt being used
     @AuraEnabled()
     public static void deleteRelatedOrderItem(Id ordId){
 
@@ -46,6 +48,25 @@ public with sharing class Orders {
         } catch (Exception e) {
            // return e.getMessage();
         }
+    }
+
+    @AuraEnabled()
+    public static String updateOrder(Id ordId){
+        List<Order> li = [select Id,TotalAmount,OrderNumber,Status,approval__c from Order WHERE Id=:ordId];
+        if(li[0].TotalAmount > 100000)
+        {
+            
+            li[0].approval__c = 'yes';
+            update li[0];
+            return 'approval';
+        }
+        else 
+            {
+                li[0].Status = 'In process';
+                update li[0];
+                return 'confirmed';
+            }
+        
     }
 
 }

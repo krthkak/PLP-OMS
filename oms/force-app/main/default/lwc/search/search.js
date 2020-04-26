@@ -4,6 +4,7 @@ import getUnitPrice from '@salesforce/apex/Orders.getUnitPrice';
 import getRelatedOrderItem from '@salesforce/apex/Orders.getRelatedOrderItem';
 import getOrderDetails from '@salesforce/apex/Orders.getOrderDetail';
 import deleteRelatedOrderItem from '@salesforce/apex/Orders.deleteRelatedOrderItem';
+import updOrd from '@salesforce/apex/Orders.updateOrder';
 import { deleteRecord } from 'lightning/uiRecordApi';
 const DELAY = 300;
 export default class Search extends LightningElement {
@@ -209,6 +210,37 @@ export default class Search extends LightningElement {
     handleCancelOrder(event)
     {
         location.reload();
+    }
+
+    handleConfirmOrder(event)
+    {
+        updOrd({ordId:this.currentOrderId}).then(
+            result=>{
+                console.log("result received for update");
+                console.log(result);
+                if(result == 'approval')
+                {
+                    alert("The Order is requested for approval");
+                    location.reload();
+                }
+                else if(result=='confirmed')
+                {
+                    alert("The Order is confirmed");
+                    location.reload();
+                }
+            }
+        ).catch(error => {
+            // display server exception in toast msg 
+            const event = new ShowToastEvent({
+                title: 'Error',
+                variant: 'error',
+                message: error.body.message,
+            });
+            this.dispatchEvent(event);
+            // reset contacts var with null   
+           // this.order = null;
+        });
+ 
     }
 
 }
