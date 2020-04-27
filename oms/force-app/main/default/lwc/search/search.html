@@ -1,8 +1,12 @@
 <template>
     <template if:true={isShowSearchComponent}>
-    <template if:true={isShowAdd}>
         <lightning-record-edit-form object-api-name="OrderItem" onsuccess={handleSuccess} onerror={handleError}>
             <lightning-input-field field-name="OrderId" onchange={saveOrderId}>
+            </lightning-input-field>
+        </lightning-record-edit-form>
+    <template if:true={isShowAdd}>
+        <lightning-record-edit-form object-api-name="OrderItem" onsuccess={handleSuccess} onerror={handleError}>
+            <lightning-input-field field-name="OrderId" value ={currentOrderId}>
             </lightning-input-field>
             <lightning-input-field field-name="Product2Id" value={product_id} disabled>
             </lightning-input-field>
