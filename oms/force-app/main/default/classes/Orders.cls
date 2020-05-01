@@ -20,11 +20,12 @@ public with sharing class Orders {
     }
 
     @AuraEnabled(cacheable = true)
-    public static List<PricebookEntry> getUnitPrice(Id searchId){
+    public static List<PricebookEntry> getUnitPrice(Id searchId,Id ordId){
        // String sea = searchName.toLowerCase();
     //    String key_name = '%' + searchKey_name + '%';
     //    String key_brand = '%'+ searchKey_brand + '%';
-        Id prid = '01s2w000004mHGDAA2' ;
+        List<Order> l = [select Pricebook2Id from Order WHERE Id=:ordId];
+        Id prid =  l[0].Pricebook2Id;
         List<PricebookEntry> li = [select Id,UnitPrice from PricebookEntry WHERE Product2Id =:searchId AND Pricebook2Id=:prid];
         return li;
     }

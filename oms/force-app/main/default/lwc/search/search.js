@@ -15,6 +15,7 @@ export default class Search extends LightningElement {
     @api unitprice;
     @api pricebookentryid;
     @api currentOrderId = null;
+    @api updateOrderItem;
 
 
     products;
@@ -24,6 +25,7 @@ export default class Search extends LightningElement {
     isShowAdd = false;
     isShowSearchComponent = true;
     isShowFinalOrder = false;
+    isOrderItemUpdate = false;
     
 
 
@@ -144,9 +146,14 @@ export default class Search extends LightningElement {
 
     handleAdd(event)
     {
+        if(this.currentOrderId==null || this.currentOrderId == '')
+        {
+            alert("Please select Order to continue");
+        }
+        else{
         console.log("Product Id : "+event.target.value);
         this.product_id = event.target.value;
-        getUnitPrice({'searchId':event.target.value}).then(result=> {
+        getUnitPrice({'searchId':event.target.value,'ordId':this.currentOrderId}).then(result=> {
             console.log(JSON.stringify(result))
             this.unitprice = result[0].UnitPrice;
             this.pricebookentryid = result[0].Id;
@@ -163,6 +170,7 @@ export default class Search extends LightningElement {
            // this.order = null;
         });
         this.isShowAdd = true;
+    }
     }
 
     handleRemove(event)
@@ -231,16 +239,45 @@ export default class Search extends LightningElement {
             }
         ).catch(error => {
             // display server exception in toast msg 
-            const event = new ShowToastEvent({
-                title: 'Error',
-                variant: 'error',
-                message: error.body.message,
-            });
-            this.dispatchEvent(event);
-            // reset contacts var with null   
-           // this.order = null;
+        //     const event = new ShowToastEvent({
+        //         title: 'Error',
+        //         variant: 'error',
+        //         message: error.body.message,
+        //     });
+        //     this.dispatchEvent(event);
+        //     // reset contacts var with null   
+        //    // this.order = null;
+        console.log(JSON.stringify(error));
         });
  
+    }
+
+
+    //All update stuff
+
+    handleUpdate(event)
+    {
+        this.updateOrderItem = event.target.value;
+        this.isOrderItemUpdate = true;
+    }
+
+    handleUpdateSuccess(event)
+    {
+        const updatedRecord = event.detail.id;
+        console.log('onsuccess: ', updatedRecord); 
+        this.isOrderItemUpdate = false;
+        alert("Product updated Successfully");
+        this.handleContinueHelper();
+    }
+
+    handleUpdateError(event) {
+        console.log("handleError event");
+        console.log(JSON.stringify(event.detail));
+    }
+
+    handleUpdateClose()
+    {
+        this.isOrderItemUpdate = false;
     }
 
 }

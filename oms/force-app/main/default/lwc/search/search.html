@@ -102,10 +102,40 @@
             onclick={handleContinue}>
             </lightning-button>
     </template>
+<!--                                                                  
 
+ -->
     <template if:true={isShowFinalOrder}>
         <div class="slds-text-heading--large">Order Summary</div>
         <br>
+        <template if:true={isOrderItemUpdate}>
+            <h3 class="slds-section-title--divider">Order Item Update</h3>
+            <lightning-record-edit-form object-api-name="OrderItem" 
+            record-id={updateOrderItem}
+            onsuccess={handleUpdateSuccess} onerror={handleUpdateError}>
+                <lightning-input-field field-name="Product2Id" disabled>
+                </lightning-input-field>
+                <lightning-input-field field-name="UnitPrice" disabled>
+                </lightning-input-field>
+                <lightning-input-field field-name="Quantity" >
+                </lightning-input-field>
+                <lightning-input-field field-name="TotalPrice" disabled>
+                </lightning-input-field>
+                <lightning-button 
+                class="slds-m-top_small" 
+                variant="brand" 
+                type="submit" 
+                name="update" 
+                label="Update">
+                </lightning-button>
+                <lightning-button 
+                class="slds-m-top_small"
+                type = "reset" 
+                label= "Cancel" 
+                onclick={handleUpdateClose}></lightning-button>
+            </lightning-record-edit-form>
+            <br>
+        </template>
         <h3 class="slds-section-title--divider">Order Items</h3>
         <br>
         <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
@@ -128,6 +158,9 @@
                 </th>
                 <th class="" scope="col">
                     <div class="slds-truncate" title="Stock Quantity">Total Price</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Stock Quantity">Update Product</div>
                 </th>
                 <th class="" scope="col">
                     <div class="slds-truncate" title="Stock Quantity">Remove Product</div>
@@ -154,6 +187,11 @@
                             </td>
                             <td data-label="Confidence">
                                 <div class="slds-truncate" >{orderitem.TotalPrice}</div>
+                            </td>
+                            <td data-label="Confidence">
+                                <div class="slds-truncate" >
+                                    <lightning-button label=Update onclick={handleUpdate} value = {orderitem.Id}></lightning-button>
+                                </div>
                             </td>
                             <td data-label="Confidence">
                                 <div class="slds-truncate" >

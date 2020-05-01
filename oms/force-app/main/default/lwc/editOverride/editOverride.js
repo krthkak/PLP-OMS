@@ -7,8 +7,15 @@ export default class EditOverride extends LightningElement {
         console.log('onsubmit: '+ event.detail.fields);
  
     }
+    
+    handleError(event) {
+        console.log("handleError event");
+        console.log(JSON.stringify(event.detail));
+    }
+
     handleSuccess(event) {
         const updatedRecord = event.detail.id;
         console.log('onsuccess: ', updatedRecord);
+        location.reload();
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <lightning-record-edit-form object-api-name="Order" record-id={recordId} onsuccess={handleSuccess}
+    <lightning-record-edit-form object-api-name="Order" record-id={recordId} onerror={handleError} onsuccess={handleSuccess}
     onsubmit={handleSubmit}>
         <div class="slds-grid">
             <div class="slds-col slds-size_1-of-2">

@@ -10,6 +10,11 @@ export default class NewOverride extends LightningElement {
         location.reload();
     }
 
+    handleError(event) {
+        console.log("handleError event");
+        console.log(JSON.stringify(event.detail));
+    }
+    
     handleSubmit(event) {
         //console.log(hi);
         // event.preventDefault(); // stop the form from submitting
